@@ -123,21 +123,24 @@ const Chat = ({selectedModel}) => {
 
     // Handle sending messages
 const handleSendMessage = async () => {
-    if (!inputText.trim()) return;
+    const trimmedInput = inputText.trim();
+    if (!trimmedInput) return;
+
+    setInputText('');
 
     const newUserMessage = {
         id: Date.now(),
         role: 'user',
-        parts: [{text: inputText.trim()}]
+        parts: [{ text: trimmedInput }]
     };
     setMessages(prev => [...prev, newUserMessage]);
 
     try {
         setIsTyping(true);
 
-        selectedModel === "Chat" ? await generateAIChatResponse() : await generateAIImage()
-
-        setInputText('');
+        selectedModel === "Chat" 
+            ? await generateAIChatResponse() 
+            : await generateAIImage();
 
     } catch (error) {
         console.error(error);
